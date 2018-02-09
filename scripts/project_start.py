@@ -3,5 +3,5 @@
 import sys,time,os
 from os.path import expanduser
 
-seconds = int(round(time.time()))
-with open (expanduser("~/.timecheck/start_time"), 'w') as f: f.write (str(seconds))
+milliseconds = int(round(time.time() * 1000))
+with open (expanduser("~/.timecheck/start_time"), 'w') as f: f.write (str(milliseconds))

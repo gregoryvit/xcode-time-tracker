@@ -7,10 +7,8 @@ It will survive Xcode reinstallations, so it works on 'install and forget basis'
 # Raw output example
 The result of this tool will be one simple csv file looking like this
 ```
-#ProjectName, Workspace, TimeStart, TimeEnd, Event, TimeSpent
-No project,TimeTracker.xcworkspace,1497876725,1497876729,Build Succeeded,4
-No project,TimeTracker.xcworkspace,1497876729,1497877067,Run Completed,338
-No project,TimeTracker.xcworkspace,1497877067,1497877088,Build Succeeded,21
+#Email, ProjectName, Workspace, TimeStart, Event, TimeSpent
+gregoryvit@gmail.com,No project,Test.xcworkspace,1518017360394,Build Succeeded,145025298
 ```
 
 # Installation
