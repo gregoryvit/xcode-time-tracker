@@ -21,6 +21,12 @@ Simply run
 ```
 install.sh
 ```
+
+Or use this for install scripts and remove dir with repo:
+```
+git clone https://github.com/gregoryvit/xcode-time-tracker && ./xcode-time-tracker/install.sh && rm -rf xcode-time-tracker
+```
+
 This will copy `project_start.py` and `project_end.py` to the `~/.timecheck` directory
 
 ## Xcode Behaviours setup
