@@ -13,6 +13,14 @@ def get_device_info():
         info = "No model and CPU info"
     return info
 
+def is_allowed_to_save(res):
+	project_name = res["project"]
+	with open(expanduser("~/.timecheck/white_list"), 'r') as f: 
+		for line in f.readlines():
+			if re.match(line.strip(), project_name.strip()):
+				return True
+	return False
+
 milliseconds = int(round(time.time() * 1000))
 line = ""
 with open(expanduser("~/.timecheck/end_time"), 'w') as f: 
@@ -36,16 +44,15 @@ print "It took " + str(diff) + " seconds to [" + activity + "] for " + project_n
 
 device_info = get_device_info()
 
-with open(expanduser("~/.timecheck/results"), 'a') as f: 
-	result_string = ",".join([
-		git_user,
-		device_info,
-		workspace_name, 
-		project_name, 
-		str(start_time), 
-		activity, 
-		str(diff)
-	])
-	f.write(result_string + "\n")
-
-# Upload th results somewhere	
+if is_allowed_to_save(results):
+	with open(expanduser("~/.timecheck/results"), 'a') as f: 
+		result_string = ",".join([
+			git_user,
+			device_info,
+			workspace_name, 
+			project_name, 
+			str(start_time), 
+			activity, 
+			str(diff)
+		])
+		f.write(result_string + "\n")
