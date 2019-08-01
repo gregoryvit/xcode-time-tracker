@@ -4,6 +4,7 @@
 
 cp ./scripts/project_end.py ~/.timecheck/
 cp ./scripts/project_start.py ~/.timecheck/
+cp ./scripts/sender.py ~/.timecheck/
 cp ./scripts/white_list ~/.timecheck/
 
 echo "Everything is ready. Now it's time to configure Xcode behaviors (see README.md)"
