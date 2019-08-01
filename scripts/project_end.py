@@ -3,6 +3,8 @@
 import sys,time,os
 from os.path import expanduser
 import subprocess
+import re
+from sender import send_results
 
 
 def get_device_info():
@@ -12,6 +14,13 @@ def get_device_info():
     except:
         info = "No model and CPU info"
     return info
+
+def get_git_user():
+	try:
+		git_user = subprocess.check_output(['git', 'config', 'user.email'])[:-1]
+	except:
+		git_user = "No git user"
+	return git_user
 
 def is_allowed_to_save(res):
 	project_name = res["project"]
@@ -29,30 +38,43 @@ with open(expanduser("~/.timecheck/start_time"), 'r') as f:
 	line = f.readline()
 
 start_time = int(line)
-diff = milliseconds - start_time
+duration = milliseconds - start_time
 
 activity = os.environ.get("IDEAlertMessage", "No message")
-project_name = os.environ.get("XcodeWorkspace", "No workspace")
-workspace_name = os.environ.get("XcodeProject", "No project")
+project_name = os.environ.get("XcodeProject", "No project")
+workspace_name = os.environ.get("XcodeWorkspace", "No workspace")
 
-try:
-	git_user = subprocess.check_output(['git', 'config', 'user.email'])[:-1]
-except:
-	git_user = "No git user"
+build_entity_name = workspace_name if workspace_name != "No workspace" else project_name
 
-print "It took " + str(diff) + " seconds to [" + activity + "] for " + project_name
+device_info = get_device_info()
+git_user = get_git_user()
+
+print "It took " + str(duration) + " seconds to [" + activity + "] for " + build_entity_name
 
 device_info = get_device_info()
 
-if is_allowed_to_save(results):
+results = {
+	"user": git_user,
+	"event": activity,
+	"device": device_info,
+	"project": build_entity_name,
+	"duration": duration,
+	"started": start_time
+}
+
+def save_results_to_file(res):
 	with open(expanduser("~/.timecheck/results"), 'a') as f: 
 		result_string = ",".join([
-			git_user,
-			device_info,
-			workspace_name, 
-			project_name, 
-			str(start_time), 
-			activity, 
-			str(diff)
+			res["user"],
+			res["device"],
+			res["project"], 
+			str(res["started"]), 
+			res["event"], 
+			str(res["duration"])
 		])
 		f.write(result_string + "\n")
+
+
+if is_allowed_to_save(results):
+	save_results_to_file(results)
+	send_results(results)
