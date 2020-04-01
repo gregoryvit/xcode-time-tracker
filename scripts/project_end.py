@@ -9,10 +9,10 @@ from sender import send_results
 
 def get_device_info():
     try:
-        items = subprocess.check_output(['sysctl', '-n', 'machdep.cpu.brand_string', 'hw.model']).decode('utf-8').split('\n')
+        items = subprocess.check_output(['sysctl', '-n', 'machdep.cpu.brand_string', 'hw.model', 'hw.memsize', '']).decode('utf-8').split('\n')
         info = "| ".join([i for i in items if i])
     except:
-        info = "No model and CPU info"
+        info = "No model, CPU or RAM info"
     return info
 
 def get_git_user():
